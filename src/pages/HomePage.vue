@@ -1,41 +1,63 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container">
+    <div v-if="account">
+      <PostForm />
     </div>
+    <section class="row m-3">
+      <div class="col-4 text-center">
+        <button @click="changePage(newerUrl)" :disabled="!newerUrl" class="btn btn-danger">Newer</button>
+      </div>
+      <div class="col-4 text-center">
+        <button @click="changePage(olderUrl)" :disabled="!olderUrl" class="btn btn-danger">Older</button>
+      </div>
+      <div class="m-3" v-for="post in posts" :key="post.id">
+        <PostCard :post="post" />
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { computed, onMounted } from 'vue';
+import { postsService } from '../services/PostsService.js'
+import Pop from '../utils/Pop';
+import { AppState } from '../AppState.js'
+import PostForm from '../components/PostForm.vue';
+import { logger } from '../utils/Logger';
+
+
 export default {
   setup() {
-    return {}
-  }
+    onMounted(() => {
+      getPosts();
+    });
+    async function getPosts() {
+      try {
+        await postsService.getPosts();
+      }
+      catch (error) {
+        Pop.error(error);
+      }
+    }
+    return {
+      posts: computed(() => AppState.posts),
+      account: computed(() => AppState.account),
+      newerUrl: computed(() => AppState.newerUrl),
+      olderUrl: computed(() => AppState.olderUrl),
+
+      async changePage(url) {
+        try {
+          await postsService.changePage(url)
+        } catch (error) {
+          Pop.error(error)
+        }
+      }
+    };
+
+
+  },
+  components: { PostForm }
 }
 </script>
 
-<style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-
-  .home-card {
-    width: 50vw;
-
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

@@ -1,0 +1,46 @@
+<template>
+    <form class="row" @submit.prevent="createPost">
+        <div class="col-9 mb-2">
+            <label for="post-body">Post Description</label>
+            <textarea v-model="postData.body" id="post-body" class="form-control" placeholder="Post Body" cols="20"
+                rows="10" required maxlength="500"></textarea>
+        </div>
+        <div class="col-9">
+            <label for="post-imgUrl">Img Url</label>
+            <input v-model="postData.imgUrl" type="url" id="post-imgUrl" class="form-control" placeholder="must be Url"
+                min="1" max="500">
+            <img class="img-fluid mt-1 h-50" :src="postData.imgUrl" alt="">
+            <div class="text-end">
+                <button class="btn btn-success" title="submit post data to databse">
+                    Create Post
+                </button>
+            </div>
+        </div>
+    </form>
+</template>
+
+<script>
+import { ref } from 'vue';
+import Pop from '../utils/Pop';
+import { postsService } from '../services/PostsService';
+export default {
+    setup() {
+        const postData = ref({})
+        return {
+            postData,
+            async createPost() {
+                try {
+                    await postsService.createPost(postData.value)
+                    postData.value = {}
+                    Pop.success('Posted Up')
+                } catch (error) {
+                    Pop.error(error)
+                }
+            }
+        };
+    },
+};
+</script>
+
+
+<style></style>
