@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="account">
+    <div v-if="account.id">
       <PostForm />
     </div>
     <section class="row m-3">
@@ -24,6 +24,7 @@ import Pop from '../utils/Pop';
 import { AppState } from '../AppState.js'
 import PostForm from '../components/PostForm.vue';
 import { logger } from '../utils/Logger';
+import { Account } from '../models/Account';
 
 
 export default {

@@ -1,11 +1,14 @@
 <template>
     <div class="col-8 card p-3">
         <div class="row">
-            <div class="col-12">
-                <p> <img class="profile-pic" :src="post.creator.picture" alt="post.creator.name"> {{ post.creator.name }}
-                </p>
-                <p class="fs-2 text-end text-warning" v-if="post.creator.graduated"><i class="mdi mdi-trophy"></i></p>
-            </div>
+            <router-link :to="{ name: 'Profile', params: { profileId: post.creatorId } }" @click.stop>
+                <div class="col-12">
+                    <p> <img class="profile-pic" :src="post.creator.picture" alt="post.creator.name"> {{ post.creator.name
+                    }}
+                    </p>
+                    <p class="fs-2 text-end text-warning" v-if="post.creator.graduated"><i class="mdi mdi-trophy"></i></p>
+                </div>
+            </router-link>
             <div class="col-12">
                 {{ post.body }}
             </div>
@@ -18,7 +21,12 @@
                 {{ post.createdAt }}
             </div>
             <div class="text-end">
-                <i class="mdi mdi-heart"></i> {{ post.likeIdCount }}
+                <div v-if="account.id == post.creatorId">
+                    <button class="btn btn-danger" @click="deletePost">Delete Post</button>
+                </div>
+                <div v-if="account.id">
+                    <i class="mdi mdi-heart"></i> {{ post.likeIdCount }}
+                </div>
             </div>
 
         </div>
@@ -26,12 +34,30 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import { Post } from '../models/Post';
+import { AppState } from '../AppState';
+import Pop from '../utils/Pop';
+import { postsService } from '../services/PostsService';
 
 export default {
     props: { post: { type: Post, required: true } },
-    setup() {
-        return {};
+    setup(props) {
+        return {
+            account: computed(() => AppState.account),
+
+            async deletePost() {
+                try {
+                    if (await Pop.confirm('Are you sure you want to delete this?')) {
+                        const postId = props.post.id
+                        await postsService.deletePost(postId)
+                        Pop.success('Deleted Post!')
+                    }
+                } catch (error) {
+                    Pop.error(error)
+                }
+            }
+        };
     },
 };
 </script>

@@ -9,5 +9,6 @@ export class Post {
         this.likeIdCount = data.likeIds.length
         this.creator = data.creator
         this.createdAt = new Date(data.createdAt).toLocaleDateString()
+        this.id = data.id
     }
 }

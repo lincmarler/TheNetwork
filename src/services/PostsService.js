@@ -31,6 +31,21 @@ class PostsService {
         AppState.newerUrl = res.data.newer
         AppState.olderUrl = res.data.older
     }
+
+    async deletePost(postId) {
+        await api.delete(`/api/posts/${postId}`)
+        let indexToRemove = AppState.posts.findIndex(post => post.id == postId)
+        if (indexToRemove >= 0) {
+            AppState.posts.splice(indexToRemove, 1)
+        }
+    }
+
+    async getPostByProfileId(profileId) {
+        AppState.posts = []
+        const res = await api.get(`api/posts?creatorId=${profileId}`)
+        logger.log(res.data)
+        AppState.posts = res.data.posts.map(post => new Post(post))
+    }
 }
 
 

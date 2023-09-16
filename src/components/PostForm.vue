@@ -20,14 +20,16 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Pop from '../utils/Pop';
 import { postsService } from '../services/PostsService';
+import { AppState } from '../AppState';
 export default {
     setup() {
         const postData = ref({})
         return {
             postData,
+            account: computed(() => AppState.account),
             async createPost() {
                 try {
                     await postsService.createPost(postData.value)
