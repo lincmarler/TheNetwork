@@ -45,6 +45,17 @@ export default {
     setup(props) {
         return {
             account: computed(() => AppState.account),
+            newerUrl: computed(() => AppState.newerUrl),
+            olderUrl: computed(() => AppState.olderUrl),
+
+            async changePage(url) {
+                try {
+                    await postsService.changePage(url)
+                } catch (error) {
+                    Pop.error(error)
+                }
+            },
+
 
             async deletePost() {
                 try {

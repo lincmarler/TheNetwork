@@ -3,7 +3,14 @@
     <div v-if="account.id">
       <PostForm />
     </div>
-    <section class="row m-3">
+    <section class="row">
+      <Button />
+      <div class="m-3" v-for="post in posts" :key="post.id">
+        <PostCard :post="post" />
+      </div>
+    </section>
+
+    <!-- <section class="row m-3">
       <div class="col-4 text-center">
         <button @click="changePage(newerUrl)" :disabled="!newerUrl" class="btn btn-danger">Newer</button>
       </div>
@@ -13,7 +20,7 @@
       <div class="m-3" v-for="post in posts" :key="post.id">
         <PostCard :post="post" />
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -43,16 +50,16 @@ export default {
     return {
       posts: computed(() => AppState.posts),
       account: computed(() => AppState.account),
-      newerUrl: computed(() => AppState.newerUrl),
-      olderUrl: computed(() => AppState.olderUrl),
+      //   newerUrl: computed(() => AppState.newerUrl),
+      //   olderUrl: computed(() => AppState.olderUrl),
 
-      async changePage(url) {
-        try {
-          await postsService.changePage(url)
-        } catch (error) {
-          Pop.error(error)
-        }
-      }
+      //   async changePage(url) {
+      //     try {
+      //       await postsService.changePage(url)
+      //     } catch (error) {
+      //       Pop.error(error)
+      //     }
+      //   }
     };
 
 

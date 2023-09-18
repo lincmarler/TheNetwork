@@ -1,10 +1,25 @@
 <template>
-    <div class="container-fluid">
+    <div v-if="profile" class="container-fluid">
         <section class="row">
-            <div class="col-12">
-                <!-- {{ profile.picture }} -->
-                <!-- <p>{{ post.creator.name }}</p> -->
-                <ProfileCard :profile="profile" />
+            <div class="col-12 cover-img">
+                <img class="profile-pic" :src="profile.picture" alt="">
+                {{ profile.name }}
+            </div>
+            <div class="col-6 text-center">
+                {{ profile.bio }}
+            </div>
+        </section>
+        <h3 class="mt-4">{{ profile.name }}'s Posts</h3>
+        <section class="row text-center">
+            <div v-if="account.id == profile.id" class="col-12">
+                <PostForm />
+            </div>
+            <div>
+                <Button />
+            </div>
+            <div v-for="post in posts" :key="post.id" class="col-12">
+
+                <PostCard :post="post" />
             </div>
         </section>
     </div>
@@ -43,8 +58,8 @@ export default {
             }
         }
         return {
-            post: computed(() => AppState.posts),
-            profile: computed(() => AppState.activeProfile),
+            posts: computed(() => AppState.posts),
+            profile: computed(() => AppState.profile),
             account: computed(() => AppState.account),
             coverImg: computed(() => `url(${AppState.activeProfile?.coverImg})`)
         };
@@ -54,4 +69,19 @@ export default {
 </script>
 
 
-<style></style>
+<style lang="scss" scoped>
+.cover-img {
+    background-image: v-bind(coverImg);
+    min-height: 50vh;
+    background-position: center;
+    background-size: cover;
+}
+
+.profile-pic {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50em;
+}
+</style>
