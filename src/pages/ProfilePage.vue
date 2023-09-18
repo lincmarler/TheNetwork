@@ -1,5 +1,13 @@
 <template>
-    profile page
+    <div class="container-fluid">
+        <section class="row">
+            <div class="col-12">
+                <!-- {{ profile.picture }} -->
+                <!-- <p>{{ post.creator.name }}</p> -->
+                <ProfileCard :profile="profile" />
+            </div>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -35,7 +43,7 @@ export default {
             }
         }
         return {
-            posts: computed(() => AppState.posts),
+            post: computed(() => AppState.posts),
             profile: computed(() => AppState.activeProfile),
             account: computed(() => AppState.account),
             coverImg: computed(() => `url(${AppState.activeProfile?.coverImg})`)
