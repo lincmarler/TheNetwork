@@ -14,7 +14,7 @@
             <div class="col-4 text-center fs-1">
                 {{ profile.bio }}
             </div>
-            <div class="col-4 fs-1 text-center">
+            <div class="col-4 fs-1 text-center" v-if="profile.github">
                 <a :href="profile.github"> <i class="mdi mdi-github"></i></a>
             </div>
             <div class="col-4 text-center">

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <section class="row">
-      <div class="col-6" v-for="add in adds" :key="add.title">
+      <div class="col-5 m-3" v-for="add in adds" :key="add.title">
         <AddCard :add="add" />
 
       </div>
