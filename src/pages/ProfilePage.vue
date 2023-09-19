@@ -1,6 +1,10 @@
 <template>
     <div v-if="profile" class="container">
-        <section class="row">
+        <section class="row text-align-center">
+            <div class="col-6 g-3" v-for="add in adds" :key="add.title">
+                <AddCard :add="add" />
+
+            </div>
             <div class="col-12 cover-img">
                 <!-- TODO throw in social media links.... make sure these are only displayed if they exist -->
 
@@ -43,6 +47,7 @@ import { useRoute } from 'vue-router';
 import Pop from '../utils/Pop';
 import { profileService } from '../services/ProfileService';
 import { postsService } from '../services/PostsService';
+import { addsService } from '../services/AddsService';
 
 export default {
     setup() {
@@ -54,6 +59,7 @@ export default {
         async function getPostByProfileId() {
             try {
                 await postsService.getPostByProfileId(route.params.profileId)
+                await addsService.getAdds()
             } catch (error) {
                 Pop.error(error)
             }
@@ -67,6 +73,7 @@ export default {
             }
         }
         return {
+            adds: computed(() => AppState.adds),
             posts: computed(() => AppState.posts),
             profile: computed(() => AppState.profile),
             account: computed(() => AppState.account),

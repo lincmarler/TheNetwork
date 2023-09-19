@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h1>{{ add.title }}</h1>
+    <div class="row">
+        <div class="col-6">
+            <img class="add-image" :src="add.tall" alt="">
+        </div>
     </div>
 </template>
 
@@ -13,9 +15,7 @@ import { Add } from '../models/Add';
 export default {
     props: { add: { type: Add, required: true } },
     setup() {
-        onMounted(() => {
-            getAdds();
-        });
+
         async function getAdds() {
             try {
                 await addsService.getAdds()
@@ -29,4 +29,11 @@ export default {
 </script>
 
 
-<style></style>
+<style lang="scss" scoped>
+.add-image {
+    // height: 250px;
+    // width: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+</style>

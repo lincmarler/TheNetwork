@@ -8,7 +8,8 @@ class AddsService {
         AppState.adds = []
         const res = await api.get('api/ads')
         logger.log('got adds', res.data)
-        AppState.adds = res.data.posts.map(add => new Add(add))
+        AppState.adds = res.data.map(add => new Add(add))
+        logger.log(AppState.adds, 'got em')
     }
 }
 
