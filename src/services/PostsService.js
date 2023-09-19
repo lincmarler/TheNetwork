@@ -18,11 +18,19 @@ class PostsService {
         logger.log(AppState.newerUrl, AppState.olderUrl)
     }
 
+
+
     async createPost(postData) {
         const res = await api.post('api/posts', postData)
         const newPost = new Post(res.data)
         AppState.posts.unshift(newPost)
         return newPost
+    }
+
+    async addLike(postId) {
+        const res = await api.post(`api/posts/${postId}/like`)
+        // logger.log(res.data)
+
     }
 
     async changePage(url) {
@@ -45,6 +53,9 @@ class PostsService {
         const res = await api.get(`api/posts?creatorId=${profileId}`)
         logger.log(res.data)
         AppState.posts = res.data.posts.map(post => new Post(post))
+        // TODO save some things here for pagination
+        AppState.newerUrl = res.data.newer
+        AppState.olderUrl = res.data.older
     }
 }
 

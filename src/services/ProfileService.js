@@ -9,6 +9,8 @@ class ProfileService {
         const res = await api.get(`api/profiles/${profileId}`)
         AppState.profile = new Profile(res.data)
         logger.log(res.data)
+        AppState.newerUrl = res.data.newerUrl
+        AppState.olderUrl = res.data.olderUrl
     }
 }
 

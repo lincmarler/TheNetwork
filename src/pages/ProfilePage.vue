@@ -1,12 +1,21 @@
 <template>
-    <div v-if="profile" class="container-fluid">
+    <div v-if="profile" class="container">
         <section class="row">
             <div class="col-12 cover-img">
+                <!-- TODO throw in social media links.... make sure these are only displayed if they exist -->
+
                 <img class="profile-pic" :src="profile.picture" alt="">
                 {{ profile.name }}
             </div>
-            <div class="col-6 text-center">
+            <div class="col-4 text-center fs-1">
                 {{ profile.bio }}
+            </div>
+            <div class="col-4 fs-1 text-center">
+                <a :href="profile.github"> <i class="mdi mdi-github"></i></a>
+            </div>
+            <div class="col-4 text-center">
+                <p class="fs-2">{{ profile.class }}</p>
+                <p class="fs-2 text-warning" v-if="profile.graduated"><i class="mdi mdi-trophy"></i></p>
             </div>
         </section>
         <h3 class="mt-4">{{ profile.name }}'s Posts</h3>
@@ -15,7 +24,7 @@
                 <PostForm />
             </div>
             <div>
-                <Button />
+                <ButtonSwitch />
             </div>
             <div v-for="post in posts" :key="post.id" class="col-12">
 

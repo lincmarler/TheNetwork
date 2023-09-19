@@ -1,11 +1,17 @@
 <template>
   <div class="container">
-    <div v-if="account.id">
-      <PostForm />
-    </div>
     <section class="row">
-      <Button />
-      <div class="m-3" v-for="post in posts" :key="post.id">
+      <div v-if="account.id" class="col-9">
+        <PostForm />
+      </div>
+      <div class="col-3" v-for="add in adds" :key="add.title">
+        <Add :add="add" />
+      </div>
+    </section>
+
+    <section class="row">
+      <ButtonSwitch />
+      <div class="m-3 col-12" v-for="post in posts" :key="post.id">
         <PostCard :post="post" />
       </div>
     </section>
@@ -32,6 +38,8 @@ import { AppState } from '../AppState.js'
 import PostForm from '../components/PostForm.vue';
 import { logger } from '../utils/Logger';
 import { Account } from '../models/Account';
+import ButtonSwitch from '../components/ButtonSwitch.vue';
+import { addsService } from '../services/AddsService';
 
 
 export default {
@@ -50,6 +58,7 @@ export default {
     return {
       posts: computed(() => AppState.posts),
       account: computed(() => AppState.account),
+      adds: computed(() => AppState.adds)
       //   newerUrl: computed(() => AppState.newerUrl),
       //   olderUrl: computed(() => AppState.olderUrl),
 
@@ -64,7 +73,7 @@ export default {
 
 
   },
-  components: { PostForm }
+  components: { PostForm, ButtonSwitch }
 }
 </script>
 

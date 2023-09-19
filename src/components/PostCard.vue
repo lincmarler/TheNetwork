@@ -1,5 +1,5 @@
 <template>
-    <div class="col-8 card p-3">
+    <div class="card p-3">
         <div class="row">
             <router-link :to="{ name: 'Profile', params: { profileId: post.creatorId } }" @click.stop>
                 <div class="col-12">
@@ -24,7 +24,7 @@
                 <div v-if="account.id == post.creatorId">
                     <button class="btn btn-danger" @click="deletePost">Delete Post</button>
                 </div>
-                <div v-if="account.id">
+                <div v-if="account.id" @click="addLike()" class="btn fs-2">
                     <i class="mdi mdi-heart"></i> {{ post.likeIdCount }}
                 </div>
             </div>
@@ -39,6 +39,7 @@ import { Post } from '../models/Post';
 import { AppState } from '../AppState';
 import Pop from '../utils/Pop';
 import { postsService } from '../services/PostsService';
+import { profileService } from '../services/ProfileService';
 
 export default {
     props: { post: { type: Post, required: true } },
@@ -64,6 +65,15 @@ export default {
                         await postsService.deletePost(postId)
                         Pop.success('Deleted Post!')
                     }
+                } catch (error) {
+                    Pop.error(error)
+                }
+            },
+            async addLike() {
+                try {
+                    const postId = props.post.id
+                    await postsService.addLike(postId)
+                    await postsService.getPosts()
                 } catch (error) {
                     Pop.error(error)
                 }
